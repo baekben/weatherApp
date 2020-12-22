@@ -8,6 +8,22 @@
 		<link rel="shortcut icon" href="#" />
 	</head>
 	<body>
+		<div>
+			<form id="inputForm">
+				<label for="location">Location</label>
+				<input type="text" id="location" />
+				<select name="units" id="units">
+					<option value="Imperial">Imperial (&#8457/Miles)</option>
+					<option value="Metric">Metric (&#8451/Kilometers)</option>
+				</select>
+
+			</form>
+			<button id="submitBtn" type="submit">Submit</button>
+		</div>
+		<div class="weatherDisplay">
+			<h2 id='weather'>Weather:</h2>
+			<h2 id='temperature'>Temperature:</h2>
+		</div>
 		<script src="script.js"></script>
 	</body>
 </html>
