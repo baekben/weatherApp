@@ -8,7 +8,7 @@
 		<link rel="shortcut icon" href="#" />
 	</head>
 	<body>
-		<div>
+		<div id='content' >
 			<form id="inputForm">
 				<label for="location">Location</label>
 				<input type="text" id="location" />
@@ -16,13 +16,14 @@
 					<option value="Imperial">Imperial (&#8457/Miles)</option>
 					<option value="Metric">Metric (&#8451/Kilometers)</option>
 				</select>
-
 			</form>
 			<button id="submitBtn" type="submit">Submit</button>
+			<div id="weatherDisplay" class='animate-bottom'>
+				<h2 id='weather'>Weather:</h2>
+				<h2 id='temperature'>Temperature:</h2>
+			</div>	
 		</div>
-		<div class="weatherDisplay">
-			<h2 id='weather'>Weather:</h2>
-			<h2 id='temperature'>Temperature:</h2>
+		<div id='loader'>
 		</div>
 		<script src="script.js"></script>
 	</body>
