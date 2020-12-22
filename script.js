@@ -1,16 +1,20 @@
+var apiKey = config.API_Key;
 const submit = document.getElementById('submitBtn');
 submit.addEventListener('click', submitLocation);
+const loader = document.getElementById('loader');
+const weatherDisplay = document.getElementById('weatherDisplay');
 function submitLocation(e) {
 	e.preventDefault();
 	let location = document.getElementById('location').value;
 	let units = document.getElementById('units').value;
-	document.getElementById('loader').style.display = 'block';
+	loader.style.display = 'block';
+	weatherDisplay.style.display = 'none';
 	weatherData(location, units);
 }
 
 async function weatherData(location, unit) {
 	const response = await fetch(
-		`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=31e9c3eab4853f005e67fc274311227e&units=${unit}
+		`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=${unit}
 	`,
 		{
 			mode: 'cors',
@@ -23,7 +27,7 @@ async function weatherData(location, unit) {
 		const data = await response.json();
 		console.log(data);
 		const weatherStatus = processData(data);
-		setTimeout(displayWeather(weatherStatus, unit), 3000);
+		setTimeout(displayWeather(weatherStatus, unit), 300);
 	}
 }
 
@@ -41,8 +45,8 @@ function processData(data) {
 }
 
 function displayWeather(processedData, unit) {
-	document.getElementById('loader').style.display = 'none';
-	document.getElementById('weatherDisplay').style.display = 'block';
+	loader.style.display = 'none';
+	weatherDisplay.style.display = 'block';
 	let weather = processedData.weatherState;
 	let temp = processedData.temperature;
 	unit = unit === 'Imperial' ? '&#8457' : '&#8451';
