@@ -4,12 +4,13 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Weather App</title>
-		<link rel="stylesheet" href="style.css" />
+		<link rel="stylesheet" href="components/weather-icons.min.css">
+		<link rel="stylesheet" href="components/style.css" />
 		<link rel="shortcut icon" href="#" />
 	</head>
 	<body>
 		<div id='content' >
-			<form id="inputForm">
+			<form id="inputForm" onsubmit="submitLocation(event)">
 				<label for="location">Location</label>
 				<input type="text" id="location" />
 				<select name="units" id="units">
@@ -21,11 +22,12 @@
 			<div id="weatherDisplay" class='animate-bottom'>
 				<h2 id='weather'>Weather:</h2>
 				<h2 id='temperature'>Temperature:</h2>
+				<div id='highLow'></div>
 			</div>	
 		</div>
 		<div id='loader'>
 		</div>
-		<script type='text/javascript'src="config.js"></script>
-		<script src="script.js"></script>
+		<script type='text/javascript'src="components/config.js"></script>
+		<script src="components/script.js"></script>
 	</body>
 </html>

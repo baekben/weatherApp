@@ -35,11 +35,19 @@ function processData(data) {
 	let weather = [];
 	data.weather.forEach((e) => weather.push(e.main));
 	const temp = data.main.temp;
+	const tempMax = data.main.temp_max;
+	const tempMin = data.main.temp_min;
+	const weatherIcon = data.weather[0].icon;
 	let strWeather = weather.join(', ');
-	console.log(`Weather: ${strWeather} \nTemperature: ${temp}`);
+	console.log(
+		`Weather: ${strWeather} \nTemperature: ${temp} \n Temp High: ${tempMax} Temp Low: ${tempMin} \n Icon: ${weatherIcon}`
+	);
 	const newData = {
 		weatherState: strWeather,
 		temperature: temp,
+		tempMax: tempMax,
+		tempMin: tempMin,
+		icon: weatherIcon,
 	};
 	return newData;
 }
@@ -49,7 +57,51 @@ function displayWeather(processedData, unit) {
 	weatherDisplay.style.display = 'block';
 	let weather = processedData.weatherState;
 	let temp = processedData.temperature;
+	let tempHigh = processedData.tempMax;
+	let tempLow = processedData.tempMin;
+	let icon = processedData.icon;
+	var iconImage = '';
+	switch (icon) {
+		case '01d':
+			iconImage = 'wi-day-sunny';
+			break;
+		case '02d':
+			iconImage = 'wi-day-cloudy';
+			break;
+		case '03d':
+		case '03n':
+			iconImage = 'wi-cloud';
+			break;
+		case '04d':
+			iconImage = 'wi-cloudy';
+			break;
+		case '09d':
+			iconImage = 'wi-rain';
+			break;
+		case '10d':
+			iconImage = 'wi-day-rain';
+			break;
+		case '11d':
+			iconImage = 'wi-thunderstorm';
+			break;
+		case '13d':
+		case '13n':
+			iconImage = 'wi-snow';
+			break;
+		case '50d':
+		case '50n':
+			iconImage = 'wi-fog';
+			break;
+	}
+	console.log(`icon image: ${iconImage}`);
 	unit = unit === 'Imperial' ? '&#8457' : '&#8451';
-	document.getElementById('weather').innerHTML = `Weather: ${weather}`;
+	var currentWeather = document.getElementById('weather');
+	currentWeather.innerHTML = `Weather: ${weather}`;
 	document.getElementById('temperature').innerHTML = `Temperature: ${temp}${unit}`;
+	document.getElementById('highLow').innerHTML = `H: ${tempHigh}${unit} L: ${tempLow}${unit}`;
+
+	var newIcon = document.createElement('i');
+	newIcon.id = 'icon';
+	newIcon.className = `wi ${iconImage}`;
+	weatherDisplay.appendChild(newIcon);
 }
