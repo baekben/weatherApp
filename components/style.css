@@ -1,6 +1,42 @@
 #icon {
 	font-size: 50px;
 }
+
+#content {
+	margin: auto;
+	width: 75%;
+	text-align: center;
+	align-items: center;
+}
+
+#inputForm {
+	background-color: green;
+	border: 1px solid green;
+	border-radius: 5px;
+	padding: 5px;
+	font-weight: bold;
+	color: white;
+}
+
+button {
+	background-color: #007aff;
+	border: 1px solid black;
+	border-radius: 3px;
+	padding-left: 15px;
+	padding-right: 15px;
+	font-weight: bold;
+	color: white;
+	font-size: medium;
+}
+
+#units {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	background-color: lightgreen;
+	border: 1px solid lightgreen;
+}
+
 #loader {
 	display: none;
 	position: absolute;
