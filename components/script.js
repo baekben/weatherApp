@@ -38,6 +38,8 @@ function processData(data) {
 	const tempMax = data.main.temp_max;
 	const tempMin = data.main.temp_min;
 	const weatherIcon = data.weather[0].icon;
+	const location = data.name;
+	const country = data.sys.country;
 	let strWeather = weather.join(', ');
 	console.log(
 		`Weather: ${strWeather} \nTemperature: ${temp} \n Temp High: ${tempMax} Temp Low: ${tempMin} \n Icon: ${weatherIcon}`
@@ -48,6 +50,8 @@ function processData(data) {
 		tempMax: tempMax,
 		tempMin: tempMin,
 		icon: weatherIcon,
+		location: location,
+		country: country,
 	};
 	return newData;
 }
@@ -110,10 +114,12 @@ function displayWeather(processedData, unit) {
 	loader.style.display = 'none';
 	weatherDisplay.style.display = 'block';
 	let weather = processedData.weatherState;
-	let temp = processedData.temperature;
-	let tempHigh = processedData.tempMax;
-	let tempLow = processedData.tempMin;
+	let temp = Math.round(processedData.temperature);
+	let tempHigh = Math.round(processedData.tempMax);
+	let tempLow = Math.round(processedData.tempMin);
 	let icon = processedData.icon;
+	let city = processedData.location;
+	let country = processedData.country;
 	const iconImage = weatherIcon(icon);
 	getTime(icon);
 
@@ -121,11 +127,19 @@ function displayWeather(processedData, unit) {
 	const currentWeather = document.getElementById('weather');
 	currentWeather.innerHTML = `Weather: ${weather}`;
 	document.getElementById('temperature').innerHTML = `Temperature: ${temp}${unit}`;
-	document.getElementById('highLow').innerHTML = `H: ${tempHigh}${unit} L: ${tempLow}${unit}`;
+	document.getElementById('highLow').innerHTML = `L: ${tempLow}${unit}/H: ${tempHigh}${unit}`;
 	var currentIcon = document.getElementById('icon');
-	if (currentIcon) {
+	var currentLocation = document.getElementById('inputLocation');
+	if (currentIcon && currentLocation) {
 		currentIcon.remove();
+		currentLocation.remove();
 	}
+	const location = document.createElement('h2');
+	location.id = 'inputLocation';
+	weatherDisplay.appendChild(location);
+	currentWeather.after(location);
+	location.textContent = `${city}, ${country}`;
+
 	const newIcon = document.createElement('i');
 	newIcon.id = 'icon';
 	newIcon.className = `wi ${iconImage}`;
