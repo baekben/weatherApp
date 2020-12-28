@@ -1,5 +1,5 @@
 #icon {
-	font-size: 50px;
+	font-size: 100px;
 }
 
 #content {
@@ -18,6 +18,14 @@
 	font-size: large;
 	font-weight: bold;
 	color: #ffffff;
+}
+
+#weatherDisplay {
+	display: none;
+}
+
+#location {
+	font-size: large;
 }
 
 button {
@@ -97,8 +105,4 @@ button {
 		bottom: 0;
 		opacity: 1;
 	}
-}
-
-#weatherDisplay {
-	display: none;
 }

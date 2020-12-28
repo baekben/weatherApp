@@ -34,24 +34,17 @@ async function weatherData(location, unit) {
 function processData(data) {
 	let weather = [];
 	data.weather.forEach((e) => weather.push(e.main));
-	const temp = data.main.temp;
-	const tempMax = data.main.temp_max;
-	const tempMin = data.main.temp_min;
-	const weatherIcon = data.weather[0].icon;
-	const location = data.name;
-	const country = data.sys.country;
 	let strWeather = weather.join(', ');
-	console.log(
-		`Weather: ${strWeather} \nTemperature: ${temp} \n Temp High: ${tempMax} Temp Low: ${tempMin} \n Icon: ${weatherIcon}`
-	);
 	const newData = {
 		weatherState: strWeather,
-		temperature: temp,
-		tempMax: tempMax,
-		tempMin: tempMin,
-		icon: weatherIcon,
-		location: location,
-		country: country,
+		temperature: data.main.temp,
+		tempMax: data.main.temp_max,
+		tempMin: data.main.temp_min,
+		icon: data.weather[0].icon,
+		location: data.name,
+		country: data.sys.country,
+		humidity: data.main.humidity,
+		wind: data.wind.speed,
 	};
 	return newData;
 }
@@ -120,31 +113,49 @@ function displayWeather(processedData, unit) {
 	let icon = processedData.icon;
 	let city = processedData.location;
 	let country = processedData.country;
+	let humid = processedData.humidity;
+	let windSpeed = processedData.wind;
 	const iconImage = weatherIcon(icon);
 	getTime(icon);
 
-	unit = unit === 'Imperial' ? '&#8457' : '&#8451';
+	tempUnit = unit === 'Imperial' ? '&#8457' : '&#8451';
+	speedUnit = unit === 'Imperial' ? 'mph' : 'm/s'
 	const currentWeather = document.getElementById('weather');
 	currentWeather.innerHTML = `Weather: ${weather}`;
-	document.getElementById('temperature').innerHTML = `Temperature: ${temp}${unit}`;
-	document.getElementById('highLow').innerHTML = `L: ${tempLow}${unit}/H: ${tempHigh}${unit}`;
+	const temperature = document.getElementById('temperature');
+	temperature.innerHTML = `Temperature: ${temp}${tempUnit}`;
+	const highLow = document.getElementById('highLow');
+	highLow.innerHTML = `L: ${tempLow}${tempUnit} / H: ${tempHigh}${tempUnit}`;
 	var currentIcon = document.getElementById('icon');
 	var currentLocation = document.getElementById('inputLocation');
 	if (currentIcon && currentLocation) {
 		currentIcon.remove();
 		currentLocation.remove();
 	}
-	const location = document.createElement('h2');
+
+	const location = document.createElement('h1');
 	location.id = 'inputLocation';
 	weatherDisplay.appendChild(location);
-	currentWeather.after(location);
+	currentWeather.before(location);
 	location.textContent = `${city}, ${country}`;
 
 	const newIcon = document.createElement('i');
 	newIcon.id = 'icon';
 	newIcon.className = `wi ${iconImage}`;
 	weatherDisplay.appendChild(newIcon);
-	currentWeather.after(newIcon);
+	temperature.after(newIcon);
+
+	const humidity = document.createElement('h4');
+	humidity.id = 'humidity';
+	weatherDisplay.appendChild(humidity);
+	highLow.after(humidity);
+	humidity.textContent = `Humidity: ${humid}%`;
+
+	const wind = document.createElement('h4');
+	wind.id = 'wind';
+	weatherDisplay.appendChild(wind);
+	highLow.after(wind);
+	wind.textContent = `Wind: ${windSpeed} ${speedUnit}`;
 }
 
 function getTime(icon) {
