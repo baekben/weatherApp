@@ -7,6 +7,7 @@
 	width: 75%;
 	text-align: center;
 	align-items: center;
+	padding-bottom: 2.5rem;
 }
 
 #inputForm {
@@ -42,6 +43,12 @@ button {
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	appearance: none;
+}
+
+#footer {
+	position: absolute;
+	bottom: 0;
+	height: 2.5rem;
 }
 
 #loader {
