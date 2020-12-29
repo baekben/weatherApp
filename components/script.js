@@ -21,7 +21,8 @@ async function weatherData(location, unit) {
 		}
 	);
 	if (response.status === 400) {
-		window.alert('Error');
+		await window.alert('Error');
+		window.location.reload();
 		return;
 	} else {
 		const data = await response.json();
@@ -119,7 +120,7 @@ function displayWeather(processedData, unit) {
 	getTime(icon);
 
 	tempUnit = unit === 'Imperial' ? '&#8457' : '&#8451';
-	speedUnit = unit === 'Imperial' ? 'mph' : 'm/s'
+	speedUnit = unit === 'Imperial' ? 'mph' : 'm/s';
 	const currentWeather = document.getElementById('weather');
 	currentWeather.innerHTML = `Weather: ${weather}`;
 	const temperature = document.getElementById('temperature');
@@ -128,34 +129,40 @@ function displayWeather(processedData, unit) {
 	highLow.innerHTML = `L: ${tempLow}${tempUnit} / H: ${tempHigh}${tempUnit}`;
 	var currentIcon = document.getElementById('icon');
 	var currentLocation = document.getElementById('inputLocation');
-	if (currentIcon && currentLocation) {
+	var currentHumidity = document.getElementById('humidity');
+	var currentWind = document.getElementById('wind');
+	if (currentIcon) {
 		currentIcon.remove();
 		currentLocation.remove();
+		currentHumidity.remove();
+		currentWind.remove();
 	}
 
 	const location = document.createElement('h1');
-	location.id = 'inputLocation';
-	weatherDisplay.appendChild(location);
-	currentWeather.before(location);
+	createElement(location, 'inputLocation', weatherDisplay, 'before', currentWeather);
 	location.textContent = `${city}, ${country}`;
 
 	const newIcon = document.createElement('i');
-	newIcon.id = 'icon';
+	createElement(newIcon, 'icon', weatherDisplay, 'after', temperature);
 	newIcon.className = `wi ${iconImage}`;
-	weatherDisplay.appendChild(newIcon);
-	temperature.after(newIcon);
 
 	const humidity = document.createElement('h4');
-	humidity.id = 'humidity';
-	weatherDisplay.appendChild(humidity);
-	highLow.after(humidity);
+	createElement(humidity, 'humidity', weatherDisplay, 'after', highLow);
 	humidity.textContent = `Humidity: ${humid}%`;
 
 	const wind = document.createElement('h4');
-	wind.id = 'wind';
-	weatherDisplay.appendChild(wind);
-	highLow.after(wind);
+	createElement(wind, 'wind', weatherDisplay, 'after', highLow);
 	wind.textContent = `Wind: ${windSpeed} ${speedUnit}`;
+}
+
+function createElement(item, id, appendElement, placement, refElement) {
+	item.id = `${id}`;
+	appendElement.appendChild(item);
+	if (placement == 'before') {
+		refElement.before(item);
+	} else {
+		refElement.after(item);
+	}
 }
 
 function getTime(icon) {
