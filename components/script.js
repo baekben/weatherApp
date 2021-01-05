@@ -35,7 +35,7 @@ async function weatherData(location, units) {
 
 async function getCoordinates(location, units) {
 	const response = await fetch(
-		`http://api.openweathermap.org/geo/1.0/direct?q=${location}&limit=5&appid=${apiKey}`,
+		`https://api.openweathermap.org/geo/1.0/direct?q=${location}&limit=5&appid=${apiKey}`,
 		{ mode: 'cors' }
 	);
 	if (response.status === 400) {
