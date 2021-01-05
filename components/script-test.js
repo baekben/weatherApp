@@ -10,11 +10,12 @@ function submitLocation(e) {
 	loader.style.display = 'block';
 	weatherDisplay.style.display = 'none';
 	weatherData(location, units);
+	getCoordinates(location, units);
 }
 
-async function weatherData(location, unit) {
+async function weatherData(location, units) {
 	const response = await fetch(
-		`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=${unit}
+		`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=${units}
 	`,
 		{
 			mode: 'cors',
@@ -28,8 +29,66 @@ async function weatherData(location, unit) {
 		const data = await response.json();
 		console.log(data);
 		const weatherStatus = processData(data);
-		setTimeout(displayWeather(weatherStatus, unit), 300);
+		setTimeout(displayWeather(weatherStatus, units), 300);
 	}
+}
+
+async function getCoordinates(location, units) {
+	const response = await fetch(
+		`http://api.openweathermap.org/geo/1.0/direct?q=${location}&limit=5&appid=${apiKey}`,
+		{ mode: 'cors' }
+	);
+	if (response.status === 400) {
+		await window.alert('Error');
+		window.location.reload();
+		return;
+	} else {
+		const data = await response.json();
+		console.log('coordinates');
+		console.log(data);
+		const coordinates = {
+			lon: data[0].lon,
+			lat: data[0].lat,
+		};
+		oneCallWeather(coordinates, units);
+	}
+}
+
+async function oneCallWeather(location, units) {
+	const response = await fetch(
+		`https://api.openweathermap.org/data/2.5/onecall?lat=${location.lat}&lon=${location.lon}&exclude=hourly,minutely&appid=${apiKey}&units=${units}`,
+		{ mode: 'cors' }
+	);
+	if (response === 400) {
+		await window.alert('Something went wrong');
+		window.location.reload();
+		return;
+	} else {
+		const data = await response.json();
+		console.log('one call api:');
+		console.log(data);
+		const dailyData = dailyWeather(data);
+		console.log(dailyData);
+	}
+}
+
+function dailyWeather(data) {
+	const days = [];
+	data.daily.forEach((e) =>
+		days.push({
+			Morning: e.temp.morn,
+			Day: e.temp.day,
+			Even: e.temp.eve,
+			Night: e.temp.night,
+			tempMin: e.temp.min,
+			tempMax: e.temp.max,
+			icon: e.weather[0].icon,
+			humidity: e.humidity,
+			wind: e.wind_speed,
+			time: e.dt,
+		})
+	);
+	return days;
 }
 
 function processData(data) {
@@ -46,25 +105,8 @@ function processData(data) {
 		country: data.sys.country,
 		humidity: data.main.humidity,
 		wind: data.wind.speed,
-		lon: data.coord.lon,
-		lat: data.coord.lat,
 	};
 	return newData;
-}
-async function oneCallWeather(lat, lon) {
-	const response = await fetch(
-		`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current&appid=${apiKey}`,
-		{ mode: 'cors' }
-	);
-	if (response === 400) {
-		await window.alert('Something went wrong');
-		window.location.reload();
-		return;
-	} else {
-		const data = await response.json();
-		console.log('one call api:');
-		console.log(data);
-	}
 }
 
 function weatherIcon(icon) {
@@ -121,7 +163,7 @@ function weatherIcon(icon) {
 	return iconImage;
 }
 
-function displayWeather(processedData, unit) {
+function displayWeather(processedData, units) {
 	loader.style.display = 'none';
 	weatherDisplay.style.display = 'block';
 	let weather = processedData.weatherState;
@@ -136,8 +178,8 @@ function displayWeather(processedData, unit) {
 	const iconImage = weatherIcon(icon);
 	getTime(icon);
 
-	tempUnit = unit === 'Imperial' ? '&#8457' : '&#8451';
-	speedUnit = unit === 'Imperial' ? 'mph' : 'm/s';
+	tempUnit = units === 'Imperial' ? '&#8457' : '&#8451';
+	speedUnit = units === 'Imperial' ? 'mph' : 'm/s';
 	const currentWeather = document.getElementById('weather');
 	currentWeather.innerHTML = `Weather: ${weather}`;
 	const temperature = document.getElementById('temperature');
@@ -170,8 +212,6 @@ function displayWeather(processedData, unit) {
 	const wind = document.createElement('h4');
 	createElement(wind, 'wind', weatherDisplay, 'after', highLow);
 	wind.textContent = `Wind: ${windSpeed} ${speedUnit}`;
-
-	oneCallWeather(processedData.lat, processedData.lon);
 }
 
 function createElement(item, id, appendElement, placement, refElement) {

@@ -12,29 +12,34 @@
 	</head>
 	<body>
 		<div id='content' >
-			<h1>Current Weather</h1>
+			<header>			
+				<h1>Current Weather</h1>
+			</header>
 			<form id="inputForm" onsubmit="submitLocation(event)">
 				<label for="location">Location: </label>
 				<input type="text" id="location" />
-				<label for="units">Select Units: </label>
-				<select name="units" id="units">
+				<label for="unit">Select Units: </label>
+				<select name="unit" id="units">					
 					<option value="Imperial">Imperial (&#8457/Miles)</option>
 					<option value="Metric">Metric (&#8451/Kilometers)</option>
 				</select>
-				<button id="submitBtn" type="submit">Enter</button>
+				<button id="submitBtn" type="submit">ENTER</button>
 			</form>
-			<div id="weatherDisplay" class='animate-bottom'>
-				<h1 id='weather'>Weather:</h1>
-				<h1 id='temperature'>Temperature:</h1>
-				<h3 id='highLow'></h3>
-			</div>	
-			<footer id='footer'>
+			<div id=weatherContainer>			
+				<div id="weatherDisplay" class='animate-bottom'>
+					<h1 id='weather'>Weather:</h1>
+					<h1 id='temperature'>Temperature:</h1>
+					<h3 id='highLow'></h3>
+				</div>	
+			</div>
+			<footer>
 				<h3>Created by Ben Baek 2020 <a id = 'github' href="https://github.com/baekben/weatherApp">GitHub Page</a></h3>
 			</footer>
+
 		</div>
 		<div id='loader'>
 		</div>
 		<script type='text/javascript'src="components/config.js"></script>
-		<script src="components/script.js"></script>
+		<script src="components/script-test.js"></script>
 	</body>
 </html>

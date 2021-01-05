@@ -1,6 +1,12 @@
 body {
 	font-family: 'Merriweather', serif;
+	min-height: 100%;
 }
+
+header {
+	grid-area: header;
+}
+
 #icon {
 	font-size: 100px;
 }
@@ -11,21 +17,35 @@ body {
 	text-align: center;
 	align-items: center;
 	padding-bottom: 2.5rem;
+	grid-area: content;
+	display: grid;
+	grid-template-columns: auto;
+	grid-template-rows: auto;
+	row-gap: 1.5rem;
+	grid-template-areas: 'header header header header header ' ' inputForm inputForm inputForm inputForm inputform' 'weatherDisplay . . . .' 'footer . . . .';
 }
 
 #inputForm {
-	margin-top: 3%;
-	background-color: #1e88e5;
-	border: 1px solid #1e88e5;
-	border-radius: 5px;
+	grid-area: inputForm;
+	background-color: #5ab9ea;
+	border: 1px solid #5ab9ea;
+	border-radius: 3px;
+	width: 100%;
 	padding: 20px;
 	font-size: large;
 	font-weight: bold;
 	color: #ffffff;
 }
 
+#weatherContainer {
+	grid-area: weatherDisplay;
+}
+
 #weatherDisplay {
 	display: none;
+	background-color: #8860d0;
+	padding: 1rem;
+	border-radius: 3px;
 }
 
 #location {
@@ -33,13 +53,14 @@ body {
 }
 
 button {
-	background-color: #ff5722;
-	border: 1px solid #ff5722;
+	background-color: #8860d0;
+	border: 1px solid #8860d0;
 	border-radius: 3px;
 	padding: 15px, 20px;
 	font-weight: bold;
 	color: #ffffff;
-	font-size: medium;
+	font-size: 1rem;
+	font-family: sans-serif;
 }
 
 #units {
@@ -48,10 +69,8 @@ button {
 	appearance: none;
 }
 
-#footer {
-	position: absolute;
-	bottom: 0;
-	height: 2.5rem;
+footer {
+	grid-area: footer;
 }
 
 #github {
@@ -66,7 +85,7 @@ button {
 	z-index: 1;
 	margin: -76px 0 0 -76px;
 	border: 16px solid #f3f3f3;
-	border-top: 16px solid #005cb2;
+	border-top: 16px solid #8860d0;
 	border-radius: 50%;
 	width: 120px;
 	height: 120px;
