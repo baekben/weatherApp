@@ -16,3 +16,7 @@ current weather in a particular location.
   - Weather
   - Wind Speed
   - Humidity
+
+## From The Odin Project (Project: Weather App)
+
+[The Odin Project](https://www.theodinproject.com/courses/javascript/lessons/weather-app)
